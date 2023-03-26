@@ -1,3 +1,6 @@
+#![windows_subsystem = "windows"]
+// #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] //Hide console window in release builds on Windows, this blocks stdout.
+
 use eframe::egui;
 use wpa_supplicant_creator::app::Ui;
 

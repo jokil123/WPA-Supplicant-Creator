@@ -14,6 +14,8 @@ pub enum CreatorError {
     NoMatchFound,
     #[error("No Matching Disks Found")]
     NoMatchingDisksFound,
+    #[error("Config File Template Not Found")]
+    ConfigFileTemplateNotFound,
 }
 
 impl From<std::io::Error> for CreatorError {

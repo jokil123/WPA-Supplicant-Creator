@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::{os::windows::process::CommandExt, process::Command};
 
 use fancy_regex::Regex;
 use sysinfo::{DiskExt, RefreshKind, SystemExt};
@@ -8,6 +8,9 @@ use crate::{
     data_types::{ConfigData, NetworkInfo},
     error::CreatorError,
 };
+
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+const DETACHED_PROCESS: u32 = 0x00000008;
 
 pub fn get_config_data() -> Result<ConfigData, CreatorError> {
     let sys =
@@ -38,6 +41,7 @@ fn get_network_info() -> Result<NetworkInfo, CreatorError> {
     let output_current = String::from_utf8(
         Command::new("netsh")
             .args(&["wlan", "show", "interfaces"])
+            .creation_flags(CREATE_NO_WINDOW)
             .output()?
             .stdout,
     )?;
@@ -71,6 +75,7 @@ fn get_network_info() -> Result<NetworkInfo, CreatorError> {
     let output_password = String::from_utf8(
         Command::new("netsh")
             .args(&["wlan", "show", "profile", "FRITZ!Box 7530 CO", "key=clear"])
+            .creation_flags(CREATE_NO_WINDOW)
             .output()?
             .stdout,
     )?;
